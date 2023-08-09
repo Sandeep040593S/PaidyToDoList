@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 import { addTodo, updateTodo } from "../redux/reducers/todoSlice";
 
 const TodoList = ({ todos }) => {
-
   const dispatch = useDispatch(); //have used useSelector to get mapDispatchToProps without using connect keyword
   const [newTodoTitle, setNewTodoTitle] = useState(""); //state for inputing new ToDO
   const [isAddButtonEnable, setAddButtonEnable] = useState(false);  // state to switch between Add/Update button
@@ -38,10 +37,19 @@ const TodoList = ({ todos }) => {
   //2.dispatching the updateReduxer for update functionality  in the reducer to update
   //3. at the end again making the input state to empty string
   const handleUpdateTodo = () => {
-    const updatedTodos = { ...todos[index], title: newTodoTitle };
-    dispatch(updateTodo({ index, updatedTodos }));
-    setNewTodoTitle("");
-    setAddButtonEnable(false);
+    if(todos.length!=0){
+      const updatedTodos = { ...todos[index], title: newTodoTitle };
+      dispatch(updateTodo({ index, updatedTodos }));
+      setNewTodoTitle("");
+      setAddButtonEnable(false);
+    }else{
+      setAddButtonEnable(false);
+      if (newTodoTitle.trim() !== "") {
+        dispatch(addTodo({ title: newTodoTitle }));
+      }
+      setNewTodoTitle("");
+    }
+    
   };
 
   return (
@@ -49,7 +57,7 @@ const TodoList = ({ todos }) => {
       <Text style={styles.text}>TODO:</Text>
       <FlatList
         style={{ margin: "px" }}
-        data={todos?.todos}
+        data={todos}
         renderItem={({ item, index }) => (
           <TouchableOpacity
             onPress={() => {

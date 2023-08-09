@@ -7,16 +7,15 @@ const todoSlice = createSlice({
   initialState: [],
   reducers: {
     addTodo: (state, action) => {
-      console.log("Sandeep",JSON.stringify(state)+" hello "+JSON.stringify(action))
-      state.todos.push(action.payload);
+      state.push(action.payload);
     },
     updateTodo: (state, action) => {
       const { index, updatedTodos } = action.payload;
-      state.todos[index] = updatedTodos;
+      state[index] = updatedTodos;
     },
     deleteTodo: (state, action) => {
       const index = action.payload;
-      state.todos.splice(index, 1);
+      state.splice(index, 1);
     },
   },
 });
